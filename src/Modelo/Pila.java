@@ -20,24 +20,30 @@ public class Pila {
         return this.tamano;
     }
     
-    public boolean isVacia(){
+    public boolean isEmpty(){
         return ultimoValorIngresado == null;
     }
    
-    public void insertarNodo(String dato){
+    public void push(String dato){
         Nodo nuevoNodo = new Nodo(dato);
         nuevoNodo.siguiente = ultimoValorIngresado;
         ultimoValorIngresado = nuevoNodo;
         tamano = tamano + 1;
     }
-    public String eliminarNodo(){
+    public String pop(){
         String nodoEliminado = ultimoValorIngresado.dato;
         ultimoValorIngresado = ultimoValorIngresado.siguiente;
         tamano = tamano - 1;
         return nodoEliminado;
     }
-    public String getUltimoValorIngresado(){
+    public String peek(){
         return ultimoValorIngresado.dato;
+    }
+    
+    public void vaciarPila(){
+        while(!isEmpty()){
+            pop();
+        }
     }
  
     public void mostrarPila(){
