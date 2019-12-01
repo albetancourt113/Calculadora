@@ -13,17 +13,7 @@ import java.util.Scanner;
  */
 public class InfijaAPosfija {
 
-    public static void main(String[] args) {
-
-        System.out.println("Escribe una expresión: ");
-        Scanner leer = new Scanner(System.in);
-        String expresion = leer.nextLine();
-        String posfija = infijaAPosfija(expresion);
-        System.out.println("Posfija: " + posfija);
-        System.out.println("Resultado: " + evaluarPosfija(posfija));
-    }
-
-    private static String infijaAPosfija(String expresion) {
+    public String infijaAPosfija(String expresion) {
         String expresionDepurada = depurar(expresion);
         String[] arrayInfija = expresionDepurada.split(" ");
 
@@ -123,7 +113,7 @@ public class InfijaAPosfija {
         return valorPreferencia;
     }
 
-    private static int evaluarPosfija(String expresionPosfija) {
+    public String evaluarPosfija(String expresionPosfija) {
         String[] arrayPosfija = expresionPosfija.split(" ");
         Pila pilaEntrada = new Pila();
         Pila pilaOperandos = new Pila();
@@ -138,7 +128,7 @@ public class InfijaAPosfija {
                 pilaOperandos.push(pilaEntrada.pop());
             }
         }
-        int resultado = Integer.parseInt(pilaOperandos.peek());
+        String resultado = pilaOperandos.peek();
         return resultado;
     }
 
