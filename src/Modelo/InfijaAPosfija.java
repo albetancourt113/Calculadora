@@ -18,54 +18,54 @@ public class InfijaAPosfija {
         System.out.println("Escribe una expresión: ");
         Scanner leer = new Scanner(System.in);
         String expresion = leer.nextLine();
-        System.out.println("Posfija: "+infijaAPosfija(expresion));
+        String posfija = infijaAPosfija(expresion);
+        System.out.println("Posfija: " + posfija);
+        System.out.println("Resultado: " + evaluarPosfija(posfija));
     }
-    
-    private static String infijaAPosfija(String expresion){
+
+    private static String infijaAPosfija(String expresion) {
         String expresionDepurada = depurar(expresion);
         String[] arrayInfija = expresionDepurada.split(" ");
 
-        Pila E = new Pila();
-        Pila P = new Pila();
-        Pila S = new Pila();
+        Pila pilaEntrada = new Pila();
+        Pila pilaTemporal = new Pila();
+        Pila pilaSalida = new Pila();
         Pila posfija = new Pila();
         for (int i = arrayInfija.length - 1; i >= 0; i--) {
-            E.push(arrayInfija[i]);
+            pilaEntrada.push(arrayInfija[i]);
         }
 
         try {
             //Algoritmo Infijo a Postfijo
-            while (!E.isEmpty()) {
-                switch (preferencia(E.peek())) {
+            while (!pilaEntrada.isEmpty()) {
+                switch (preferencia(pilaEntrada.peek())) {
                     case 1:
-                        P.push(E.pop());
+                        pilaTemporal.push(pilaEntrada.pop());
                         break;
                     case 2:
-                        while (!P.peek().equals("(")) {
-                            S.push(P.pop());
+                        while (!pilaTemporal.peek().equals("(")) {
+                            pilaSalida.push(pilaTemporal.pop());
                         }
-                        P.pop();
-                        E.pop();
+                        pilaTemporal.pop();
+                        pilaEntrada.pop();
                         break;
                     case 3:
-                        compararPreferencias(E, P, S);
+                        compararPreferencias(pilaEntrada, pilaTemporal, pilaSalida);
                         break;
                     case 4:
-                        compararPreferencias(E, P, S);
+                        compararPreferencias(pilaEntrada, pilaTemporal, pilaSalida);
                         break;
                     case 5:
-                        compararPreferencias(E, P, S);
+                        compararPreferencias(pilaEntrada, pilaTemporal, pilaSalida);
                         break;
                     default:
-                        S.push(E.pop());
+                        pilaSalida.push(pilaEntrada.pop());
                 }
             }
-            //Eliminacion de impurezas en la expresiones algebraicas
-            String infix = expresion.replace(" ", "");
             String guardaPosfija = "";
-            int tamaño = S.getTamano();
+            int tamaño = pilaSalida.getTamano();
             for (int i = tamaño - 1; i >= 0; i--) {
-                posfija.push(S.pop());
+                posfija.push(pilaSalida.pop());
             }
             for (int i = tamaño - 1; i >= 0; i--) {
                 guardaPosfija = guardaPosfija + " " + posfija.pop();
@@ -86,7 +86,7 @@ public class InfijaAPosfija {
     }
 
     private static String depurar(String depurarString) {
-        //depurarString = depurarString.replaceAll("\\s+", ""); //Elimina espacios en blanco
+        depurarString = depurarString.replaceAll("\\s+", ""); //Elimina espacios en blanco
         depurarString = "(" + depurarString + ")";
         String simbols = "^+-*/()";
         String stringDepurado = "";
@@ -103,24 +103,70 @@ public class InfijaAPosfija {
     }
 
     //Jerarquia de los operadores
-    private static int preferencia(String op) {
+    private static int preferencia(String operador) {
         int valorPreferencia = 99;
-        if (op.equals("^")) {
+        if (operador.equals("^")) {
             valorPreferencia = 5;
         }
-        if (op.equals("*") || op.equals("/")) {
+        if (operador.equals("*") || operador.equals("/")) {
             valorPreferencia = 4;
         }
-        if (op.equals("+") || op.equals("-")) {
+        if (operador.equals("+") || operador.equals("-")) {
             valorPreferencia = 3;
         }
-        if (op.equals(")")) {
+        if (operador.equals(")")) {
             valorPreferencia = 2;
         }
-        if (op.equals("(")) {
+        if (operador.equals("(")) {
             valorPreferencia = 1;
         }
         return valorPreferencia;
+    }
+
+    private static int evaluarPosfija(String expresionPosfija) {
+        String[] arrayPosfija = expresionPosfija.split(" ");
+        Pila pilaEntrada = new Pila();
+        Pila pilaOperandos = new Pila();
+        for (int i = arrayPosfija.length - 1; i >= 1; i--) {
+            pilaEntrada.push(arrayPosfija[i]);
+        }
+        String operadores = "^*/+-";
+        while (!pilaEntrada.isEmpty()) {
+            if (operadores.contains("" + pilaEntrada.peek())) {
+                pilaOperandos.push(hacerOperacion(pilaEntrada.pop(), pilaOperandos.pop(), pilaOperandos.pop()) + "");
+            } else {
+                pilaOperandos.push(pilaEntrada.pop());
+            }
+        }
+        int resultado = Integer.parseInt(pilaOperandos.peek());
+        return resultado;
+    }
+
+    private static int hacerOperacion(String operador, String operandoB, String operandoA) {
+        int numA = Integer.parseInt(operandoA);
+        int numB = Integer.parseInt(operandoB);
+
+        if (operador.equals("^")) {
+            int potencia = numA ^ numB;
+            return potencia;
+        }
+        if (operador.equals("*")) {
+            int multiplicacion = numA * numB;
+            return multiplicacion;
+        }
+        if (operador.equals("/")) {
+            int division = numA / numB;
+            return division;
+        }
+        if (operador.equals("+")) {
+            int suma = numA + numB;
+            return suma;
+        }
+        if (operador.equals("-")) {
+            int resta = numA - numB;
+            return resta;
+        }
+        return 0;
     }
 
 }

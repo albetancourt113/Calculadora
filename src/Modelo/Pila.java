@@ -49,7 +49,7 @@ public class Pila {
     public void mostrarPila(){
         Nodo recorrido = ultimoValorIngresado;
         while(recorrido != null){
-            lista = lista + recorrido.dato +"\n";
+            lista = lista + recorrido.dato +" ";
             recorrido = recorrido.siguiente;
         }
         System.out.println(lista);
