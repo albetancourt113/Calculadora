@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.AnalizadorLexico;
+import Modelo.AnalizadorSintactico;
 import Modelo.InfijaAPosfija;
 import Vista.vistaPrincipal;
 import java.awt.event.ActionEvent;
@@ -32,14 +33,25 @@ public class controlador implements ActionListener {
         vista.setLocationRelativeTo(null);
     }
     private AnalizadorLexico analizadorLexico = new AnalizadorLexico();
-    
+    private AnalizadorSintactico analizadorSintactico = new AnalizadorSintactico();
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == vista.jButtonEvaluar) {
             if(analizadorLexico.ValidarLexico(vista.jTextFieldExpresion.getText())){
+                if(analizadorSintactico.ValidarParentesis(vista.jTextFieldExpresion.getText())){
                 String posfija = modelo.infijaAPosfija(vista.jTextFieldExpresion.getText());
-                String resultado = modelo.evaluarPosfija(posfija);
-                vista.jTextFieldResultado.setText(resultado);
-                vista.jTextFieldObservaciones.setText("");
+                  if(analizadorSintactico.validarExpresion(posfija)){
+                      String resultado = modelo.evaluarPosfija(posfija);
+                      vista.jTextFieldResultado.setText(resultado);
+                      vista.jTextFieldObservaciones.setText("");
+                  }else{
+                      vista.jTextFieldResultado.setText("Error sintactico");
+                      vista.jTextFieldObservaciones.setText(analizadorSintactico.getError());
+                  }
+                  
+                }else{
+                    vista.jTextFieldResultado.setText("Error sintactico");
+                    vista.jTextFieldObservaciones.setText(analizadorSintactico.getError());
+                }
             }else{
             vista.jTextFieldResultado.setText("Error lexico");
             vista.jTextFieldObservaciones.setText(analizadorLexico.getCaracterInvalido());
