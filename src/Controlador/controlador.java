@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import Modelo.AnalizadorLexico;
 import Modelo.InfijaAPosfija;
 import Vista.vistaPrincipal;
 import java.awt.event.ActionEvent;
@@ -17,7 +18,7 @@ import java.awt.event.ActionListener;
 public class controlador implements ActionListener {
     private InfijaAPosfija modelo;
     private vistaPrincipal vista;
-
+    
     public controlador(InfijaAPosfija modelo, vistaPrincipal vista) {
         this.modelo = modelo;
         this.vista = vista;
@@ -30,15 +31,29 @@ public class controlador implements ActionListener {
         vista.setTitle("Vista principal");
         vista.setLocationRelativeTo(null);
     }
+    private AnalizadorLexico analizadorLexico = new AnalizadorLexico();
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == vista.jButtonEvaluar) {
-            String posfija = modelo.infijaAPosfija(vista.jTextFieldExpresion.getText());
-            String resultado = modelo.evaluarPosfija(posfija);
-            vista.jTextFieldResultado.setText(resultado);
+            if(analizadorLexico.BuscarError(vista.jTextFieldExpresion.getText())){
+                String posfija = modelo.infijaAPosfija(vista.jTextFieldExpresion.getText());
+                System.out.println(posfija);
+                String resultado = modelo.evaluarPosfija(posfija);
+                vista.jTextFieldResultado.setText(resultado);
+            }else{
+            vista.jTextFieldResultado.setText("Error lexico");
+             if(analizadorLexico.isSecuencia()){
+                 vista.jTextFieldObservaciones.setText("error en la secuencia "+analizadorLexico.getCaracterInvalido());
+            }else{
+                 vista.jTextFieldObservaciones.setText("error en el caracter "+analizadorLexico.getCaracterInvalido());
+            }
+          
+            }
+      
         }else if(e.getSource() == vista.jButtonLimpiar){
             vista.jTextFieldExpresion.setText(null);
             vista.jTextFieldResultado.setText("");
+            vista.jTextFieldObservaciones.setText("");
         }else if(e.getSource() == vista.jButtonSalir){
             vista.setVisible(false);
             vista.dispose();
