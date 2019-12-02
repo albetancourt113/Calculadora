@@ -35,19 +35,15 @@ public class controlador implements ActionListener {
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == vista.jButtonEvaluar) {
-            if(analizadorLexico.BuscarError(vista.jTextFieldExpresion.getText())){
+            if(analizadorLexico.ValidarLexico(vista.jTextFieldExpresion.getText())){
                 String posfija = modelo.infijaAPosfija(vista.jTextFieldExpresion.getText());
-                System.out.println(posfija);
                 String resultado = modelo.evaluarPosfija(posfija);
                 vista.jTextFieldResultado.setText(resultado);
+                vista.jTextFieldObservaciones.setText("");
             }else{
             vista.jTextFieldResultado.setText("Error lexico");
-             if(analizadorLexico.isSecuencia()){
-                 vista.jTextFieldObservaciones.setText("error en la secuencia "+analizadorLexico.getCaracterInvalido());
-            }else{
-                 vista.jTextFieldObservaciones.setText("error en el caracter "+analizadorLexico.getCaracterInvalido());
-            }
-          
+            vista.jTextFieldObservaciones.setText(analizadorLexico.getCaracterInvalido());
+                    
             }
       
         }else if(e.getSource() == vista.jButtonLimpiar){

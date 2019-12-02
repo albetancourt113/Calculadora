@@ -13,8 +13,7 @@ import java.util.regex.Pattern;
  * @author joni1
  */
 public class AnalizadorLexico {
-private String caracterInvalido;
-private boolean secuencia=false;
+private String Error;
 public final static String DECIMAL = ".";
 public final static int PRIMERCARACTER=1;
 
@@ -28,7 +27,7 @@ enum Tipos {
             this.patron = s;
         }
     }
-public boolean BuscarError(String input){
+public boolean ValidarLexico(String input){
         String expresion = input;
         boolean caracterValido = false;
             for(int posicionCaracter=PRIMERCARACTER;posicionCaracter<expresion.length()+1;posicionCaracter++){
@@ -43,10 +42,8 @@ public boolean BuscarError(String input){
                 if(!caracterValido){
                 if(expresion.substring((posicionCaracter-1),posicionCaracter).equals(DECIMAL)){
                 AnalizarSecuencia(expresion);
-                secuencia = true;
                 }else{
-                    secuencia=false;
-                    setCaracterInvalido(expresion.substring((posicionCaracter-1),posicionCaracter));
+                    setCaracterInvalido("Error en el caracter "+expresion.substring((posicionCaracter-1),posicionCaracter));
                 }
                 return caracterValido;
             }
@@ -54,29 +51,22 @@ public boolean BuscarError(String input){
             return caracterValido;
     }
     public void setCaracterInvalido(String caracterInvalido) {
-        this.caracterInvalido = caracterInvalido;
+        this.Error = caracterInvalido;
     }
     public void AnalizarSecuencia(String Expresion){
     final String regex = "[\\d.]+";
-    final Pattern pattern = Pattern.compile(regex);
-    final Matcher matcher = pattern.matcher(Expresion);
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(Expresion);
 
 while (matcher.find()) {
-    setCaracterInvalido(matcher.group());
+    setCaracterInvalido("Error en la secuencia "+matcher.group());
     break;
 }
 }
 
     public String getCaracterInvalido() {
-        return caracterInvalido;
+        return Error;
     }
 
-    public boolean isSecuencia() {
-        return secuencia;
-    }
-
-    public void setSecuencia(boolean secuencia) {
-        this.secuencia = secuencia;
-    }
     
 }
