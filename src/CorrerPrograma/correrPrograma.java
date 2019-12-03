@@ -11,10 +11,12 @@ import Vista.vistaPrincipal;
 
 /**
  * clase que corre el programa
+ *
  * @author alber
  */
 public class correrPrograma {
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         InfijaAPosfija modelo = new InfijaAPosfija();
         vistaPrincipal vista = new vistaPrincipal();
         controlador ctrl = new controlador(modelo, vista);
