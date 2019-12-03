@@ -10,7 +10,7 @@ import Modelo.InfijaAPosfija;
 import Vista.vistaPrincipal;
 
 /**
- * clase que corre el programa
+ *
  * @author alber
  */
 public class correrPrograma {

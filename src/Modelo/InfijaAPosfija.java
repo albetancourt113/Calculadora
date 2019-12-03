@@ -8,15 +8,11 @@ package Modelo;
 import java.util.Scanner;
 
 /**
- *declaracion de la clase InfijaAPosfija
+ *
  * @author alber
  */
 public class InfijaAPosfija {
-    /**
-     *método que convierte una expresión infija a posfija 
-     * @param expresion
-     * @return expresión posfija
-     */
+
     public String infijaAPosfija(String expresion) {
         String expresionDepurada = depurar(expresion);
         String[] arrayInfija = expresionDepurada.split(" ");
@@ -71,21 +67,14 @@ public class InfijaAPosfija {
         }
         return "Error";
     }
-    /**
-     *método que compara la preferencia de 2 operadores
-     * @param 3 pilas
-     */
+
     private static void compararPreferencias(Pila E, Pila P, Pila S) {
         while (preferencia(P.peek()) >= preferencia(E.peek())) {
             S.push(P.pop());
         }
         P.push(E.pop());
     }
-    /**
-     * método que limpia una cadena
-     * @param depurarString
-     * @return string depurado
-     */
+
     private static String depurar(String depurarString) {
         depurarString = depurarString.replaceAll("\\s+", ""); //Elimina espacios en blanco
         depurarString = "(" + depurarString + ")";
@@ -103,11 +92,7 @@ public class InfijaAPosfija {
         return stringDepurado.replaceAll("\\s+", " ").trim();
     }
 
-    /**
-     * método que devuelve la preferencia de un operador
-     * @param operador
-     * @return valorPreferencia
-     */
+    //Jerarquia de los operadores
     private static int preferencia(String operador) {
         int valorPreferencia = 99;
         if (operador.equals("^")) {
@@ -127,11 +112,7 @@ public class InfijaAPosfija {
         }
         return valorPreferencia;
     }
-    /**
-     *método que evalua una expresión posfija y devuelve su resultado
-     * @param expresionPosfija
-     * @return resultado
-     */
+
     public String evaluarPosfija(String expresionPosfija) {
         String[] arrayPosfija = expresionPosfija.split(" ");
         Pila pilaEntrada = new Pila();
@@ -150,13 +131,7 @@ public class InfijaAPosfija {
         String resultado = pilaOperandos.peek();
         return resultado;
     }
-    /**
-     * método que efectua una operación entre 2 operandos
-     * @param operador
-     * @param operandoB
-     * @param operandoA
-     * @return resultado
-     */
+
     private static int hacerOperacion(String operador, String operandoB, String operandoA) {
         int numA = Integer.parseInt(operandoA);
         int numB = Integer.parseInt(operandoB);
