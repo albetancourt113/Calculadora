@@ -6,13 +6,16 @@
 package Modelo;
 
 /**
- *
+ * declaración de la clase nodo
  * @author alber
  */
 public class Nodo {
     String dato;
     Nodo siguiente;
-    
+    /**
+     * declaración del constructor de la clase
+     * @param dato 
+     */
     public Nodo(String dato){
         this.dato = dato;
         siguiente = null;
