@@ -11,13 +11,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- *
+ * declaración de la clase controlador
  * @author alber
  */
 public class controlador implements ActionListener {
     private InfijaAPosfija modelo;
     private vistaPrincipal vista;
-
+    /**
+     * constructor de la clase
+     * @param modelo
+     * @param vista 
+     */
     public controlador(InfijaAPosfija modelo, vistaPrincipal vista) {
         this.modelo = modelo;
         this.vista = vista;
@@ -25,12 +29,17 @@ public class controlador implements ActionListener {
         this.vista.jButtonLimpiar.addActionListener(this);
         this.vista.jButtonEvaluar.addActionListener(this);
     }
-    
+    /**
+     * método para iniciar la vista
+     */
     public void iniciar() {
         vista.setTitle("Vista principal");
         vista.setLocationRelativeTo(null);
     }
-    
+    /**
+     * método para comunicar la vista con el modelo
+     * @param e 
+     */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == vista.jButtonEvaluar) {
             String posfija = modelo.infijaAPosfija(vista.jTextFieldExpresion.getText());
